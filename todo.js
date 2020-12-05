@@ -17,39 +17,31 @@ const cleanToDos = pending.filter(function (toDo) {
   return toDo.id !== parseInt(li.id);
 });
 pending = cleanToDos;
-saveToDos();
+saveToDos(PENDING, pending);
 }
 
 function deleteFinished(event) {
 const btn = event.target;
 const li = btn.parentNode;
 finishedList.removeChild(li);
-const cleanToDos = pending.filter(function (fin) {
+const cleanToDos = finished.filter(function (fin) {
   return fin.id !== parseInt(li.id);
 });
 finished = cleanToDos;
-saveToDos();
+saveToDos(FINISHED, finished);
 }
 
 function moveToFinishedList(event) {
 const btn = event.target;
 const li = btn.parentNode;
 pendingList.removeChild(li);
-
 const cleanToDos = pending.filter(function (toDo) {
   return toDo.id !== parseInt(li.id);
 });
 pending = cleanToDos;
 saveToDos();
-
 let text = li.querySelector("span").innerHTML;
 paintFinished(text);
-
-const delFins = finished.filter(function (fin) {
-  return fin.id !== parseInt(li.id);
-});
-finished = delFins;
-saveToDos();
 }
 
 function moveToPendingList(event) {
@@ -57,20 +49,20 @@ const btn = event.target;
 const li = btn.parentNode;
 finishedList.removeChild(li);
   
-const cleanToDos = pending.filter(function (toDo) {
+const cleanToDos = finished.filter(function (toDo) {
   return toDo.id !== parseInt(li.id);
 });
-pending = cleanToDos;
-saveToDos();
-
-let text = li.querySelector("span").innerHTML;
-paintPending(text);
+finished = cleanToDos;
+saveToDos(FINISHED, finished);
 
 const delFins = finished.filter(function (fin) {
   return fin.id !== parseInt(li.id);
 });
 finished = delFins;
-saveToDos();
+saveToDos(FINISHED, finished);
+
+let text = li.querySelector("span").innerHTML;
+paintPending(text);
 }
 
 function saveToDos() {
@@ -102,12 +94,12 @@ pending.push(toDoObj);
 saveToDos(PENDING, pending);
 }
 
-function paintFinished(text, event) {
+function paintFinished(text) {
 const li = document.createElement("li");
 const delBtn = document.createElement("button");
 const downBtn = document.createElement("button");
 const span = document.createElement("span");
-const newId = finished.length + 1;
+const newId = pending.length + 1;
 downBtn.innerText = "B";
 downBtn.addEventListener("click", moveToPendingList);
 delBtn.innerText = "x";
@@ -116,13 +108,13 @@ span.innerText = text;
 li.appendChild(delBtn);
 li.appendChild(downBtn);
 li.appendChild(span);
-li.id = newId;
+
 finishedList.appendChild(li);
 const toDoObj = {
   text: text,
   id: newId
 };
-pending.push(toDoObj);
+finished.push(toDoObj);
 saveToDos(FINISHED, finished);
 }
 
