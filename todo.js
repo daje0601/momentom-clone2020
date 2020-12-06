@@ -24,11 +24,12 @@ function deleteFinished(event) {
 const btn = event.target;
 const li = btn.parentNode;
 finishedList.removeChild(li);
-const cleanToDos = finished.filter(function (fin) {
-  return fin.id !== parseInt(li.id);
+const cleanToDos = finished.filter(function (toDo) {
+  return toDo.id !== parseInt(li.id);
 });
 finished = cleanToDos;
 saveToDos(FINISHED, finished);
+
 }
 
 function moveToFinishedList(event) {
@@ -48,12 +49,6 @@ function moveToPendingList(event) {
 const btn = event.target;
 const li = btn.parentNode;
 finishedList.removeChild(li);
-  
-const cleanToDos = finished.filter(function (toDo) {
-  return toDo.id !== parseInt(li.id);
-});
-finished = cleanToDos;
-saveToDos(FINISHED, finished);
 
 const delFins = finished.filter(function (fin) {
   return fin.id !== parseInt(li.id);
@@ -63,6 +58,7 @@ saveToDos(FINISHED, finished);
 
 let text = li.querySelector("span").innerHTML;
 paintPending(text);
+
 }
 
 function saveToDos() {
@@ -108,7 +104,7 @@ span.innerText = text;
 li.appendChild(delBtn);
 li.appendChild(downBtn);
 li.appendChild(span);
-
+li.id = newId;
 finishedList.appendChild(li);
 const toDoObj = {
   text: text,
@@ -118,7 +114,7 @@ finished.push(toDoObj);
 saveToDos(FINISHED, finished);
 }
 
-function handleSubmit(event) {
+function handleSubmit1(event) {
 event.preventDefault();
 const currentValue = toDoInput.value;
 paintPending(currentValue);
@@ -145,7 +141,7 @@ if (loadedPending !== null) {
 
 function init() {
 loadToDos();
-toDoForm.addEventListener("submit", handleSubmit);
+toDoForm.addEventListener("submit", handleSubmit1);
 }
 
 init();
